@@ -23,6 +23,7 @@ namespace Memory
         int firstCardNumber = NOT_PICKED_YET;
         int secondCardNumber = NOT_PICKED_YET;
         int matches = 0;
+        int SIZE = 20;
         #endregion
 
         #region Methods
@@ -60,15 +61,18 @@ namespace Memory
             return GetCardFilename(index).Substring(4, 1);
         }
 
-        private string GetCardSuit(int index)
+        /*private string GetCardSuit(int index)
         {
             return GetCardFilename(index).Substring(5, 1);
-        }
+        }*/
 
-        // TODO:  students should write this one
         private bool IsMatch(int index1, int index2)
         {
-            return true;
+            if (GetCardValue(index1) == GetCardValue(index2))
+            {
+                return true;
+            }
+            return false;
         }
 
         // This method fills each picture box with a filename
@@ -91,6 +95,17 @@ namespace Memory
         // TODO:  students should write this one
         private void ShuffleCards()
         {
+            Random shuffle = new Random();
+            int rand;
+
+            string tempFileName = "";
+            for (int i = 0; i < 20; i++)
+            {
+                tempFileName = GetCardFilename(i);
+                rand = shuffle.Next(0, SIZE);
+                SetCardFilename(i, GetCardFilename(rand));
+                SetCardFilename(rand, tempFileName);
+            }
         }
 
         // This method loads (shows) an image in a picture box.  Assumes that filenames
@@ -168,6 +183,7 @@ namespace Memory
         #region EventHandlers
         private void boardForm_Load(object sender, EventArgs e)
         {
+            FillCardFilenames();
             /* 
              * Fill the picture boxes with filenames
              * Shuffle the cards
