@@ -92,14 +92,15 @@ namespace Memory
             }
         }
 
-        // TODO:  students should write this one
+        //Shuffles cards
         private void ShuffleCards()
         {
             Random shuffle = new Random();
             int rand;
 
             string tempFileName = "";
-            for (int i = 0; i < 20; i++)
+            //for each card in sequence store its filename, assign a random card filename to it, assign its filename to the random card
+            for (int i = 0; i < SIZE; i++)
             {
                 tempFileName = GetCardFilename(i);
                 rand = shuffle.Next(0, SIZE);
@@ -123,59 +124,89 @@ namespace Memory
             card.Image = Image.FromFile(System.Environment.CurrentDirectory + "\\Cards\\black_back.jpg");
         }
 
-        // TODO:  students should write all of these
         // shows (loads) the backs of all of the cards
         private void LoadAllCardBacks()
         {
-
+            for (int i = 0; i < SIZE; i++)
+            {
+                LoadCardBack(i);
+            }
         }
 
         // Hides a picture box
         private void HideCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Visible = false;
         }
 
         private void HideAllCards()
         {
-
+            for (int i = 0; i < SIZE; i++)
+            {
+               HideCard(i);
+            }
         }
 
         // shows a picture box
         private void ShowCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Visible = true;
         }
 
         private void ShowAllCards()
         {
-
+            for (int i = 0; i < SIZE; i++)
+            {
+                ShowCard(i);
+            }
         }
 
         // disables a picture box
         private void DisableCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Click += new System.EventHandler(this.card_Click);
         }
 
+        //disables all picture boxes with a loop
         private void DisableAllCards()
         {
-
+            for (int i = 0; i < SIZE; i++)
+            {
+                DisableCard(i);
+            }
         }
 
+        //enables selected picture box
         private void EnableCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Click -= new System.EventHandler(this.card_Click);
         }
 
+        //enables all picture boxes with a loop
         private void EnableAllCards()
         {
-
+            for (int i = 0; i < SIZE; i++)
+            {
+                EnableCard(i);
+            }
         }
     
+        //for each card if it is visible enable it
         private void EnableAllVisibleCards()
         {
-
+            PictureBox card = null;
+            for (int i = 0; i < SIZE; i++)
+            {
+                card = GetCard(i);
+                if (!card.Visible)
+                {
+                    card.Click -= new System.EventHandler(this.card_Click);
+                }
+            }
         }
 
         #endregion
@@ -184,6 +215,12 @@ namespace Memory
         private void boardForm_Load(object sender, EventArgs e)
         {
             FillCardFilenames();
+            ShuffleCards();
+            LoadAllCardBacks();
+            for (int i = 0; i < SIZE; i++)
+            {
+                LoadCard(i);
+            }
             /* 
              * Fill the picture boxes with filenames
              * Shuffle the cards
